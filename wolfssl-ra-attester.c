@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stdbool.h>
+
 #include <sgx_uae_service.h>
 
 #ifdef RATLS_ECDSA

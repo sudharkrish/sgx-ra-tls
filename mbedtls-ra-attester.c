@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stdbool.h>
 #include <sgx_uae_service.h>
 
 #include <mbedtls/certs.h>
@@ -153,9 +154,33 @@ void create_x509
     do_remote_attestation(&report_data, opts, &attestation_report);
 
     generate_x509(writecrt, key, &attestation_report);
+/*
+typedef struct {
+    uint8_t ias_report[2*1024];
+    uint32_t ias_report_len;
+    uint8_t ias_sign_ca_cert[2*1024];
+    uint32_t ias_sign_ca_cert_len;
+    uint8_t ias_sign_cert[2*1024];
+    uint32_t ias_sign_cert_len;
+    uint8_t ias_report_signature[2*1024];
+    uint32_t ias_report_signature_len;
+} attestation_verification_report_t;
+*/
 
-    /* printf_sgx("attestation_report.ias_report=\n"); */
-    /* printf_sgx("%.s", attestation_report.ias_report_len, attestation_report.ias_report); */
+    printf("attestation_report.ias_report=\n");
+    //printf("%.s\n", attestation_report.ias_report_len, attestation_report.ias_report);
+	printf("\nIAS Report Len-%u->%.*s",
+	attestation_report.ias_report_len, attestation_report.ias_report_len, (char *)attestation_report.ias_report);
+
+	printf("\nIAS sign_ca_cert Len-%u->%.*s",
+	attestation_report.ias_sign_ca_cert_len, attestation_report.ias_sign_ca_cert_len, (char *)attestation_report.ias_sign_ca_cert);
+
+	printf("\nIAS sign_cert Len-%u->%.*s",
+	attestation_report.ias_sign_cert_len, attestation_report.ias_sign_cert_len, (char *)attestation_report.ias_sign_cert);
+
+	printf("IAS ias report signature Len-%u->%.*s",
+	attestation_report.ias_report_signature_len, attestation_report.ias_report_signature_len, (char *)attestation_report.ias_report_signature);
+
 }
 
 /* Generate a key and write certificate. */

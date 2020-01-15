@@ -13,6 +13,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+#include <stdbool.h>
 #include <sgx_uae_service.h>
 #include <sgx_report.h>
 

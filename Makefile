@@ -46,8 +46,17 @@ endif
 wolfssl-client: deps/wolfssl-examples/tls/client-tls.c wolfssl/libra-challenger.a
 	$(CC) -o $@ $(filter %.c, $^) $(CFLAGS) -Lwolfssl -Ldeps/local/lib $(WOLFSSL_CLIENT_LIBS)
 
+SPID=ACF477849A5553125EC9C2D4A05338DA
+EPID_SUBSCRIPTION_KEY=ce00381c4ef747769a9bde7edadf2f99
+QUOTE_TYPE="SGX_UNLINKABLE_SIGNATURE"
+
+ra.o: ra_tls_options.c
+
 ra_tls_options.c: ra_tls_options.c.sh
-	bash $^ > $@
+	SPID=$(SPID) EPID_SUBSCRIPTION_KEY=$(EPID_SUBSCRIPTION_KEY) QUOTE_TYPE=$(QUOTE_TYPE) bash $^ > $@
+
+#ra_tls_options.c: ra_tls_options.c.sh
+#	bash $^ > $@
 
 wolfssl-client-mutual: deps/wolfssl-examples/tls/client-tls.c ra_tls_options.c wolfssl/libra-challenger.a wolfssl/libnonsdk-ra-attester.a
 	$(CC) -o $@ $(filter %.c, $^) $(CFLAGS) $(LDFLAGS_GRAPHENE_QUIRKS) -DSGX_RATLS_MUTUAL -Ldeps/local/lib $(filter %.a, $^) $(WOLFSSL_SSL_SERVER_LIBS) $(SGX_DCAP_LIB)
